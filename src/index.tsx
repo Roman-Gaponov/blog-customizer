@@ -1,10 +1,10 @@
 import { createRoot } from 'react-dom/client';
-import { StrictMode, CSSProperties } from 'react';
+import { StrictMode, CSSProperties, useState } from 'react';
 import clsx from 'clsx';
 
 import { Article } from './components/article/Article';
 import { ArticleParamsForm } from './components/article-params-form/ArticleParamsForm';
-import { defaultArticleState } from './constants/articleProps';
+import { defaultArticleState, TApplyStyles } from './constants/articleProps';
 
 import './styles/index.scss';
 import styles from './styles/index.module.scss';
@@ -13,19 +13,34 @@ const domNode = document.getElementById('root') as HTMLDivElement;
 const root = createRoot(domNode);
 
 const App = () => {
+    // стейты стилизации страницы, которые кастомизирует сайдбар
+    const [fontFamily, setFontFamily] = useState(defaultArticleState.fontFamilyOption.value)
+    const [fontSize, setFontSize] = useState(defaultArticleState.fontSizeOption.value)
+    const [fontColor, setFontColor] = useState(defaultArticleState.fontColor.value)
+    const [contentWidth, setContentWidth] = useState(defaultArticleState.contentWidth.value)
+    const [backgroundColor, setBackgroundColor] = useState(defaultArticleState.backgroundColor.value)
+
+    const setApplyStyles = ({ fontFamily, fontSize, fontColor, contentWidth, backgroundColor }: TApplyStyles) => {
+        setFontFamily(fontFamily);
+        setFontSize(fontSize);
+        setFontColor(fontColor);
+        setContentWidth(contentWidth);
+        setBackgroundColor(backgroundColor);
+    }
+
 	return (
 		<main
 			className={clsx(styles.main)}
 			style={
 				{
-					'--font-family': defaultArticleState.fontFamilyOption.value,
-					'--font-size': defaultArticleState.fontSizeOption.value,
-					'--font-color': defaultArticleState.fontColor.value,
-					'--container-width': defaultArticleState.contentWidth.value,
-					'--bg-color': defaultArticleState.backgroundColor.value,
+                    '--font-family': fontFamily,
+					'--font-size': fontSize,
+					'--font-color': fontColor,
+					'--container-width': contentWidth,
+					'--bg-color': backgroundColor,
 				} as CSSProperties
 			}>
-			<ArticleParamsForm />
+			<ArticleParamsForm onApply={setApplyStyles} />
 			<Article />
 		</main>
 	);
