@@ -177,11 +177,3 @@ export const defaultArticleState = {
 };
 
 export type ArticleStateType = typeof defaultArticleState;
-
-export type TApplyStyles = {
-  fontFamily: string, 
-  fontSize: string, 
-  fontColor: string, 
-  contentWidth: string, 
-  backgroundColor: string,
-}
